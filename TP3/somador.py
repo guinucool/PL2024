@@ -32,13 +32,16 @@ class AFD:
         self.__Trasition = Trasition
 
         # Estado inicial do autômato
-        self.__Current = Initial
+        self.__Initial = Initial
 
     # Execução do conteúdo no autômato
     def run(self, content):
 
         # Inverte a ordem da lista de conteúdo
         content.reverse()
+
+        # Estado atual do autómato
+        state = self.__Initial
 
         # Percorre a lista de conteúdo inteira
         while len(content) > 0:
@@ -56,10 +59,10 @@ class AFD:
 
             # Determina o erro no caso de não haver match com o alfabeto
             if not alphabet_match:
-                raise ValueError('Given content for Automaton is invalid!')
+                return False
 
             # Percorre as transições definidas no estado
-            for transition in self.__Trasition[self.__Current]:
+            for transition in self.__Trasition[state]:
 
                 # Verifica qual é a transição associado ao elemento
                 if (re.match(transition[0], elem)):
@@ -68,10 +71,9 @@ class AFD:
                     transition[1](elem)
 
                     # Mudança do estado atual para o estado associado à transição
-                    self.__Current = transition[2]
-        
-    # Devolve o estado final do autômato    
-    def finish(self):
+                    self.state = transition[2]
+
+        # Devolve o estado final do autômato    
         return self.__Current in self.__Final
     
 # Função de adição de um número à soma
@@ -109,15 +111,19 @@ def main():
                   {'On': [(inteiro, token_add, 'On'), (equal, token_print, 'On'), (on, token_pass, 'On'), (off, token_pass, 'Off')],
                    'Off': [(inteiro, token_pass, 'Off'), (equal, token_print, 'Off'), (off, token_pass, 'Off'), (on, token_pass, 'On')]},
                   'On')
+    
+    # Variável que irá armazenar o conteúdo lido
+    content = ""
 
     # Leitura de um texto do stdin até o EOF
     for line in sys.stdin:
+        content += line
 
-        # Conversão do texto lido do stdin em tokens
-        tokens = re.findall(fr'{inteiro}|{on}|{off}|{equal}', line)
-        
-        # Execução do autômato
-        machine.run(tokens)
+    # Conversão do texto lido do stdin em tokens
+    tokens = re.findall(fr'{inteiro}|{on}|{off}|{equal}', content)
+    
+    # Execução do autômato
+    machine.run(tokens)
 
 # Execução do tronco principal do programa
 main()
