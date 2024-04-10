@@ -46,10 +46,17 @@ class AFD:
             # Retira o primeiro elemento da lista original
             elem = content.pop()
 
+            # Variável de match de erro de alfabeto
+            alphabet_match = False
+
             # Verifica se o elemento em questão pertence ao alfabeto
             for token in self.__Alphabet:
-                if not re.match(token, elem):
-                    raise ValueError('Given content for Automaton is invalid!')
+                if re.match(token, elem):
+                    alphabet_match = True
+
+            # Determina o erro no caso de não haver match com o alfabeto
+            if not alphabet_match:
+                raise ValueError('Given content for Automaton is invalid!')
 
             # Percorre as transições definidas no estado
             for transition in self.__Trasition[self.__Current]:
