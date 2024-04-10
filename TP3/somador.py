@@ -46,6 +46,11 @@ class AFD:
             # Retira o primeiro elemento da lista original
             elem = content.pop()
 
+            # Verifica se o elemento em questão pertence ao alfabeto
+            for token in self.__Alphabet:
+                if not re.match(token, elem):
+                    raise ValueError('Given content for Automaton is invalid!')
+
             # Percorre as transições definidas no estado
             for transition in self.__Trasition[self.__Current]:
 
@@ -57,7 +62,6 @@ class AFD:
 
                     # Mudança do estado atual para o estado associado à transição
                     self.__Current = transition[2]
-
         
     # Devolve o estado final do autômato    
     def finish(self):
@@ -93,11 +97,11 @@ def main():
 
     # Criação do autômato pretendido
     machine = AFD({'On', 'Off'},
-                {inteiro, on, off, equal},
-                {'On', 'Off'},
-                {'On': [(inteiro, token_add, 'On'), (equal, token_print, 'On'), (on, token_pass, 'On'), (off, token_pass, 'Off')],
-                 'Off': [(inteiro, token_pass, 'Off'), (equal, token_print, 'Off'), (off, token_pass, 'Off'), (on, token_pass, 'On')]},
-                'On')
+                  {inteiro, on, off, equal},
+                  {'On', 'Off'},
+                  {'On': [(inteiro, token_add, 'On'), (equal, token_print, 'On'), (on, token_pass, 'On'), (off, token_pass, 'Off')],
+                   'Off': [(inteiro, token_pass, 'Off'), (equal, token_print, 'Off'), (off, token_pass, 'Off'), (on, token_pass, 'On')]},
+                  'On')
 
     # Leitura de um texto do stdin até o EOF
     for line in sys.stdin:
