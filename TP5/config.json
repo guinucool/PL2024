@@ -1,0 +1,7 @@
+[
+    {"cod": "A23", "nome": "água 0.5L", "quant": 8, "preco": 70},
+    {"cod": "B34", "nome": "refrigerante 1L", "quant": 5, "preco": 150},
+    {"cod": "C45", "nome": "sumo 300ml", "quant": 12, "preco": 90},
+    {"cod": "D56", "nome": "café 200ml", "quant": 10, "preco": 120},
+    {"cod": "E67", "nome": "chá 250ml", "quant": 7, "preco": 110}
+]

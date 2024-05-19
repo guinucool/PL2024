@@ -1,12 +1,11 @@
 # Importação da bibliotecas necessárias
 from ply.lex import lex
 from datetime import datetime
+import json
 import sys
 
 # Lista de elementos presentes na máquina
-elems = [
-    {"cod": "A23", "nome": "água 0.5L", "quant": 8, "preco": 70},
-]
+elems = []
 
 # Listas de moedas possíveis
 coins = { '2e' : 200, '1e' : 100, '50c' : 50, '20c' : 20, '10c' : 10, '5c' : 5, '2c' : 2, '1c' : 1 }
@@ -238,7 +237,16 @@ def calc_change(saldo):
     return changeInCoins
 
 # Função de execução da máquina de vendas
-def machine():
+def machine(config):
+
+    # Abertura da configuração em formato json
+    file = open(config, 'r+')
+
+    # Variável que irá armazenar o conteúdo da máquina
+    global elems
+
+    # Conversão da informação em memória
+    elems = json.load(file)
 
     # Mensagem de boas vindas
     print(f'{datetime.now().strftime("%Y-%m-%d")}, Stock carregado, Estado atualizado.')
@@ -255,7 +263,12 @@ def machine():
 
             # Caso seja um comando de término
             if token.type == "SAIR":
+
+                # Armazenamento da configuração
+                json.dump(elems, file)
+
+                # Conclusão do programa
                 return
 
 # Execução da máquina
-machine()
+machine(sys.argv[1])
